@@ -3,7 +3,7 @@ const { UserSchema } = require('../schemas/user-schema')
 
 const User = mongoose.model('user', UserSchema)
 
-User.insert = async user => {
+User.insertUser = async user => {
     const newUser = new User({
         id: user.id,
         name: user.name,
@@ -26,7 +26,7 @@ User.findOneUser = async id => {
     return { statuscode: 404, message: 'User not found!', data: {} }
 }
 
-User.update = async (id, user) => {
+User.updateUser = async (id, user) => {
     const { modifiedCount } = await User.updateOne({ id: +id }, { $set: user }).exec()
     if (modifiedCount) {
         const updatedUser = User.findOne({ id: +id }).select('-_id -createdAt -__v').exec()
@@ -35,7 +35,7 @@ User.update = async (id, user) => {
     return { statuscode: 404, message: 'User not found!', data: {} }
 }
 
-User.delete = async id => {
+User.deleteUser = async id => {
     const { deletedCount } = await User.deleteOne({ id: +id })
     if (deletedCount) {
         return { statusCode: 200, message: 'User deleted!', data: {} }

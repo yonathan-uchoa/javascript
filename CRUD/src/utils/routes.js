@@ -10,12 +10,12 @@ router.get('/', (_req, res) => {
 
 router.route('/user')
     .get(async (_req, res) => {
-        const allUser = await User.find()
+        const allUser = await User.find({}, '-_id -__v')
         res.status(200).send(allUser)
     })
     .post(async (req, res) => {
         const { user } = req.body
-        res.send(await User.insert(user))
+        res.send(await User.insertUser(user))
     })
 
 router.route('/user/:id')
@@ -26,11 +26,11 @@ router.route('/user/:id')
     .patch(async (req, res) => {
         const { user } = req.body
         const { id } = req.params
-        res.send(await User.update(id, user))
+        res.send(await User.updateUser(id, user))
     })
     .delete(async (req, res) => {
         const { id } = req.params
-        res.send(await User.delete(id))
+        res.send(await User.deleteUser(id))
     })
 
 module.exports = router
