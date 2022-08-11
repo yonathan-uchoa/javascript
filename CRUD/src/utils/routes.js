@@ -3,49 +3,34 @@ const router = express.Router()
 
 const User = require('../models/user')
 
-router.get('/', (req, res) => {
+
+router.get('/', (_req, res) => {
     res.send('Hello my friend!')
 })
 
 router.route('/user')
-    .get(async (req, res) => {
-        res.setHeader('Content-Type', 'application/json')
+    .get(async (_req, res) => {
         const allUser = await User.find()
         res.status(200).send(allUser)
     })
-    .post((req, res) => {
+    .post(async (req, res) => {
         const { user } = req.body
-        res.setHeader('Content-Type', 'application/json')
-        try {
-            const newUser = User.insert(user)
-            res.send(newUser)
-        }
-        catch (e) {
-            res.send(e)
-        }
+        res.send(await User.insert(user))
     })
 
 router.route('/user/:id')
     .get(async (req, res) => {
-        res.setHeader('Content-Type', 'application/json')
-        res.send({ data: 'user/post' })
+        const { id } = req.params
+        res.send(await User.findOneUser(id))
     })
     .patch(async (req, res) => {
         const { user } = req.body
         const { id } = req.params
-        res.setHeader('Content-Type', 'application/json')
         res.send(await User.update(id, user))
     })
     .delete(async (req, res) => {
-        res.setHeader('Content-Type', 'application/json')
-        res.send({ data: 'user/post' })
+        const { id } = req.params
+        res.send(await User.delete(id))
     })
 
-
-
-
 module.exports = router
-
-
-
-
