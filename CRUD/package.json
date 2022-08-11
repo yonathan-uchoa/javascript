@@ -10,7 +10,6 @@
   "author": "yonathan uchoa simao kaveski",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.2",
     "express": "^4.18.1",
     "jest": "^28.1.3",
     "mongodb-memory-server": "^8.8.0",
