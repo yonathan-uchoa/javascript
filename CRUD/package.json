@@ -5,15 +5,19 @@
   "main": "routes.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon main.js"
+    "dev": "nodemon main.js",
+    "test": "jest --config ./jest.config.js --runInBand --detectOpenHandles --coverage --forceExit"
   },
   "author": "yonathan uchoa simao kaveski",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
-    "jest": "^28.1.3",
     "mongodb-memory-server": "^8.8.0",
     "mongoose": "^6.5.2",
     "nodemon": "^2.0.19"
+  },
+  "devDependencies": {
+    "jest": "^28.1.3",
+    "supertest": "^6.2.4"
   }
 }
