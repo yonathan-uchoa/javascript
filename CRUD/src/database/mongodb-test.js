@@ -1,10 +1,10 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const { mongo } = require('mongoose');
+const mongoose = require('mongoose')
 
-const mongod = new MongoMemoryServer({ instance: { port: 3940, dbName: 'users' } })
-
-mongod.initServer = () => {
-    mongod.start()
+async function initServer() {
+    const mongod = await MongoMemoryServer.create({ instance: { port: 3940, dbName: 'users' } })
+    mongoose.connect('mongodb://localhost:3940/users')
+    return mongod
 }
 
-module.exports = { mongod }
+module.exports = { initServer }
