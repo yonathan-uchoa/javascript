@@ -7,8 +7,12 @@ app.use((_req, res, next) => {
     res.setHeader('Content-Type', 'application/json')
     next()
 })
-app.use('/', routes)
+app.all('/', (_req, res) => {
+    res.send({ message: 'Hello my friend!' })
+})
+app.use('/user', routes)
 app.use((_req, res) => {
     res.redirect('/')
 })
+
 module.exports = app

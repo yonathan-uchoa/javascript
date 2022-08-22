@@ -3,34 +3,36 @@ const router = express.Router()
 
 const User = require('../models/user')
 
-
-router.get('/', (_req, res) => {
-    res.send('Hello my friend!')
-})
-
-router.route('/user')
+router.route('/')
     .get(async (_req, res) => {
         const allUser = await User.find({}, '-_id -__v')
         res.status(200).send(allUser)
     })
     .post(async (req, res) => {
         const { user } = req.body
-        res.send(await User.insertUser(user))
+        const response = await User.insertUser(user)
+        res.status(response.statusCode).send(response)
     })
 
-router.route('/user/:id')
-    .get(async (req, res) => {
+router.route('/:id')
+    .get((req, res) => {
         const { id } = req.params
-        res.send(await User.findOneUser(id))
+        User.findOneUser(id).then(value => {
+            res.status(value.statusCode).send(value)
+        })
     })
-    .patch(async (req, res) => {
+    .patch((req, res) => {
         const { user } = req.body
         const { id } = req.params
-        res.send(await User.updateUser(id, user))
+        User.updateUser(id, user).then(value => {
+            res.status(value.statusCode).send(value)
+        })
     })
-    .delete(async (req, res) => {
+    .delete((req, res) => {
         const { id } = req.params
-        res.send(await User.deleteUser(id))
+        User.deleteUser(id).then(value => {
+            res.status(value.statusCode).send(value)
+        })
     })
 
 module.exports = router
