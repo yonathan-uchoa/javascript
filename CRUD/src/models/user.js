@@ -3,12 +3,12 @@ const { UserSchema } = require('../schemas/user-schema')
 
 const User = mongoose.model('user', UserSchema)
 
-User.insertUser = async user => {
+User.insertUser = user => {
     const newUser = new User({
-        id: user.id,
-        name: user.name,
-        birthday: user.birthday,
-        student: user.student
+        id: user?.id,
+        name: user?.name,
+        birthday: user?.birthday,
+        student: user?.student
     })
 
     return newUser.save().then(() => {
@@ -21,18 +21,18 @@ User.insertUser = async user => {
 User.findOneUser = async id => {
     const foundUser = await User.findOne({ id: +id }).select('-_id -__v').exec()
     if (foundUser) {
-        return { statuscode: 200, message: 'User found!', data: foundUser }
+        return { statusCode: 200, message: 'User found!', data: foundUser }
     }
-    return { statuscode: 404, message: 'User not found!', data: {} }
+    return { statusCode: 404, message: 'User not found!', data: {} }
 }
 
 User.updateUser = async (id, user) => {
     const { modifiedCount } = await User.updateOne({ id: +id }, { $set: user }).exec()
     if (modifiedCount) {
-        const updatedUser = User.findOne({ id: +id }).select('-_id -createdAt -__v').exec()
-        return { statuscode: 200, message: 'Ok!', data: updatedUser }
+        const updatedUser = await User.findOne({ id: +id }).select('-_id -createdAt -__v').exec()
+        return { statusCode: 200, message: 'Ok!', data: updatedUser }
     }
-    return { statuscode: 404, message: 'User not found!', data: {} }
+    return { statusCode: 404, message: 'User not found!', data: {} }
 }
 
 User.deleteUser = async id => {
@@ -40,7 +40,7 @@ User.deleteUser = async id => {
     if (deletedCount) {
         return { statusCode: 200, message: 'User deleted!', data: {} }
     }
-    return { statuscode: 404, message: 'User not found!', data: {} }
+    return { statusCode: 404, message: 'User not found!', data: {} }
 }
 
 module.exports = User
